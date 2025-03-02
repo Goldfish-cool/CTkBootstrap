@@ -42,7 +42,7 @@ python -m pip install CTkBootstrap
 ```
 ## Simple Usage
 ```python
-import CTkBootstrap as CTk
+import CTkBootstrap as CTk # or ctk
 
 root = CTk(style="solar")
 
