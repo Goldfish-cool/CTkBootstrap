@@ -46,7 +46,7 @@ import CTkBootstrap as CTk # or ctk
 
 root = CTk(style="solar")
 
-button1 = CTk.Button(root, text="Press Me!")
+button1 = CTk.CTkButton(root, text="Press Me!")
 button1.pack(side=LEFT, padx=5, pady=10)
 
 root.mainloop()
