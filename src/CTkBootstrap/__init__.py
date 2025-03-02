@@ -20,6 +20,25 @@ except ImportError:
 from .themes import THEMES, get_theme_colors
 from .widget_theme_mapper import apply_theme_to_widget, apply_theme_to_all_children
 
+# Import the ThemeManager and theme loading functionality
+from .theme_manager import (
+    ThemeManager,
+    add_theme_search_path,
+    get_theme_search_paths,
+    reload_themes,
+    load_theme_from_file,
+    load_themes_from_directory,
+    apply_theme as apply_global_theme,
+    set_theme as set_global_theme,
+    get_theme_color,
+    get_primary_color,
+    get_secondary_color,
+    get_success_color,
+    get_danger_color,
+    get_warning_color,
+    get_info_color
+)
+
 # Version info
 __version__ = "1.0.0"
 

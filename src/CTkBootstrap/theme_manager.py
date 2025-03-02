@@ -9,6 +9,7 @@ a simple API for developers.
 import customtkinter as ctk
 from typing import Dict, List, Any, Optional, Union, Tuple
 from .themes import THEMES
+from . import theme_loader
 
 
 class ThemeManager:
@@ -772,6 +773,78 @@ class ThemeManager:
         # Apply theme
         label.configure(text_color=text_color)
 
+    @classmethod
+    def add_theme_search_path(cls, path: str) -> None:
+        """
+        Add a directory to search for theme files.
+        
+        This method adds a new directory to the theme search paths list and
+        automatically reloads themes from all search directories.
+        
+        Args:
+            path: Directory path to add to the search paths
+        """
+        theme_loader.add_search_path(path)
+        theme_loader.reload_all_themes()
+    
+    @classmethod
+    def get_theme_search_paths(cls) -> List[str]:
+        """
+        Get the current theme search paths.
+        
+        Returns:
+            A list of directory paths where themes are searched for
+        """
+        return theme_loader.get_search_paths()
+    
+    @classmethod
+    def reload_themes(cls) -> Dict[str, Dict[str, Any]]:
+        """
+        Reload all themes from all search paths.
+        
+        Returns:
+            A dictionary with all loaded themes
+        """
+        return theme_loader.reload_all_themes()
+    
+    @classmethod
+    def load_theme_from_file(cls, file_path: str) -> Optional[str]:
+        """
+        Load a theme from a JSON file and add it to available themes.
+        
+        Args:
+            file_path: Path to the JSON theme file
+            
+        Returns:
+            The name of the loaded theme, or None if loading failed
+        """
+        # Extract theme name from filename (without extension)
+        import os
+        theme_name = os.path.splitext(os.path.basename(file_path))[0].lower()
+        
+        # Load theme
+        theme_data = theme_loader.load_theme_from_file(file_path)
+        
+        if theme_data:
+            # Add theme to THEMES dictionary
+            THEMES[theme_name] = theme_data
+            return theme_name
+        
+        return None
+    
+    @classmethod
+    def load_themes_from_directory(cls, directory_path: str) -> Dict[str, Dict[str, Any]]:
+        """
+        Load all theme files from a directory.
+        
+        Args:
+            directory_path: Path to the directory containing theme files
+            
+        Returns:
+            A dictionary mapping theme names to theme definitions
+        """
+        return theme_loader.load_themes_from_directory(directory_path)
+
 
 # Global theme manager instance for simple access
 _theme_manager = None
@@ -857,4 +930,56 @@ def get_warning_color() -> str:
 
 def get_info_color() -> str:
     """Get the info color from the current theme"""
-    return get_theme_manager().info 
+    return get_theme_manager().info
+
+# Theme loading convenience functions
+def add_theme_search_path(path: str) -> None:
+    """
+    Add a directory to search for theme files.
+    
+    Args:
+        path: Directory path to add to the search paths
+    """
+    ThemeManager.add_theme_search_path(path)
+
+def get_theme_search_paths() -> List[str]:
+    """
+    Get the current theme search paths.
+    
+    Returns:
+        A list of directory paths where themes are searched for
+    """
+    return ThemeManager.get_theme_search_paths()
+
+def reload_themes() -> Dict[str, Dict[str, Any]]:
+    """
+    Reload all themes from all search paths.
+    
+    Returns:
+        A dictionary with all loaded themes
+    """
+    return ThemeManager.reload_themes()
+
+def load_theme_from_file(file_path: str) -> Optional[str]:
+    """
+    Load a theme from a JSON file and add it to available themes.
+    
+    Args:
+        file_path: Path to the JSON theme file
+        
+    Returns:
+        The name of the loaded theme, or None if loading failed
+    """
+    return ThemeManager.load_theme_from_file(file_path)
+
+def load_themes_from_directory(directory_path: str) -> Dict[str, Dict[str, Any]]:
+    """
+    Load all theme files from a directory.
+    
+    Args:
+        directory_path: Path to the directory containing theme files
+        
+    Returns:
+        A dictionary mapping theme names to theme definitions
+    """
+    return ThemeManager.load_themes_from_directory(directory_path) 

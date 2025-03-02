@@ -233,6 +233,70 @@ To create a custom theme, you can add your own entry to the `THEMES` dictionary 
 }
 ```
 
+## Loading Themes from JSON Files
+
+CTkBootstrap also supports loading themes from external JSON files, making it easy to share and distribute custom themes.
+
+### Theme JSON Format
+
+Theme files should be in JSON format and follow the same structure as the built-in themes:
+
+```json
+{
+    "appearance_mode": "dark",
+    "color_theme": "blue",
+    "colors": {
+        "primary": "#D4AF37",
+        "secondary": "#AA8C2C",
+        "success": "#9C7A3C",
+        "danger": "#BA4A00",
+        "warning": "#F5B041",
+        "info": "#D68910",
+        "light": "#FAD7A0",
+        "dark": "#212121"
+    },
+    "window": {
+        "fg_color": ["#212121", "#212121"]
+    },
+    "button": {
+        "fg_color": ["#D4AF37", "#D4AF37"],
+        "hover_color": ["#F5B041", "#F5B041"],
+        "text_color": ["#212121", "#212121"]
+    },
+    // Other widget-specific properties...
+}
+```
+
+### Loading Themes
+
+You can load themes from files or directories using the `ThemeManager` or the convenience functions:
+
+```python
+from CTkBootstrap.theme_manager import add_theme_search_path, load_theme_from_file, load_themes_from_directory
+
+# Add a directory to search for theme files
+add_theme_search_path("/path/to/themes")
+
+# Load a specific theme file
+theme_name = load_theme_from_file("/path/to/mytheme.json")
+
+# Load all themes from a directory
+themes = load_themes_from_directory("/path/to/themes")
+
+# Reload all themes from all search paths
+from CTkBootstrap.theme_manager import reload_themes
+reload_themes()
+```
+
+### Default Search Paths
+
+CTkBootstrap looks for theme files in these default locations:
+
+1. `~/.ctkbootstrap/themes/` - User-specific themes directory
+2. `[package_directory]/themes/` - Themes directory in the package
+
+You can add your own search paths using the `add_theme_search_path()` function.
+
 ## Contributing
 
 Contributions to CTkBootstrap are welcome! Feel free to submit issues or pull requests.
